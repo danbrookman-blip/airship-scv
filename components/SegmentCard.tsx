@@ -26,10 +26,13 @@ export function SegmentCard({
   s,
   shareUrl,
   showDragHandle = true,
+  menu,
 }: {
   s: SegmentSummary;
   shareUrl?: string;
   showDragHandle?: boolean;
+  /** Optional per-card burger menu (Add to view / Remove from view / Archive). */
+  menu?: React.ReactNode;
 }) {
   return (
     <div className="flex flex-col rounded-card border border-navy/[0.06] bg-surface p-5 transition hover:shadow-card">
@@ -44,6 +47,15 @@ export function SegmentCard({
             {percent(s.shareOfBase, 1)} of base
           </span>
           {shareUrl ? <ShareButton url={shareUrl} /> : null}
+          {/* Per-card burger menu. Stop pointer events bubbling to the drag handle. */}
+          {menu ? (
+            <span
+              onPointerDown={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
+            >
+              {menu}
+            </span>
+          ) : null}
           {/* Drag affordance — the whole card is the handle */}
           {showDragHandle && (
           <span className="text-navy/25" title="Drag to reorder" aria-hidden>
